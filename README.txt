@@ -1,8 +1,8 @@
 
  =====================================
-| 				RedMan                |
+| RedMan                              |
 | A XNA Platformer Game written in C# |
-| 			 By Ben Homer             |
+| By Ben Homer                        |
  =====================================
 
 RedMan is a multi-leveled platformer game with varied and interesting levels.
