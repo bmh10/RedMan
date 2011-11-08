@@ -90,7 +90,6 @@ namespace RedMan
         private float timeSinceShot;
         private int shotsToKill;
         public bool bouncingBullets, fireVertical, multiDirectoinalFiring;
-
         // Turrets associated with a single enemy (ie may have multiple)
         private Turret[] enemyTurrets;
 
