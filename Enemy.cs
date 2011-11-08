@@ -129,56 +129,7 @@ namespace RedMan
             this.multiDirectoinalFiring = false;
             this.enemyTurrets = new Turret[2];
 
-            // Separate this off into monster classification method later
-            if (monsterType == "MonsterD" || monsterType == "Boss1" || monsterType == "Boss2" || monsterType == "Boss4" || monsterType == "MonsterH" || monsterType == "MonsterN")
-                moveVertical = true;
-
-            if (monsterType == "MonsterB" || monsterType == "Boss3" || monsterType == "MonsterQ" || monsterType == "MonsterR" || monsterType == "MonsterL" || monsterType == "MonsterU" || monsterType == "MonsterY")
-                noGravity = true;
-
-            // Manage different bosses in level 12
-            if (level.LevelIndex == 12 && (monsterType == "Boss5" || monsterType == "Boss5R"))
-            {
-                switch (level12bossCount)
-                {
-                    case 0:
-                        moveVertical = true;
-                        break;
-                    case 1:
-                        moveVertical = false;
-                        noGravity = true;
-                        break;
-                    case 2:
-                        moveVertical = true;
-                        break;
-                }
-            }
-
-            // If monster in moving vertical gravity must not apply
-            if (moveVertical)
-                noGravity = true;
-
-            // Make certain cars in race level go right
-            if (monsterType == "MonsterR" || monsterType == "MonsterU" || monsterType == "MonsterQ")
-                direction = FaceDirection.Right;
-
-            if (monsterType == "MonsterQ" || monsterType == "MonsterU")
-                multiDirectoinalFiring = true;
-
-            // Make classification method later
-            if (monsterType == "Boss1" || monsterType == "Boss2" || monsterType == "Boss3" || monsterType == "Boss4" || monsterType == "Boss5" || monsterType == "Boss5R" || monsterType == "MonsterM" || monsterType == "MonsterP"
-                || monsterType == "MonsterQ" || monsterType == "MonsterU" || monsterType == "MonsterY")
-            {
-                isBoss = true;
-                this.currMoveSpeed = BossSpeed;
-                if (monsterType == "MonsterM" || monsterType == "MonsterP" || monsterType == "MonsterQ" || monsterType == "MonsterU" || monsterType == "MonsterY")
-                {
-                    hardEnemy = true;
-                    bossReloadTime = EnemyReloadTime;
-                }
-                this.bossHealth = bossMaxHealth;
-                this.shotsToKill = GetShotsToKill();
-            }
+            SetupEnemy();
 
             LoadContent(spriteSet);
 
@@ -250,6 +201,65 @@ namespace RedMan
                 }
         }
 
+        // Classifies each enemy depending on type an sets relevant charateristics
+        private void SetupEnemy()
+        {
+            String m = "Monster";
+            String b = "Boss";
+            String mt = monsterType;
+
+            if (mt == m + "D" || mt == b + "1" || mt == b + "2" || mt == b + "4" || mt == m + "H" || mt == m + "N")
+                moveVertical = true;
+
+            if (mt == m+"B" || mt == b+"3" || mt == m+"Q" || mt == m+"R" || mt == m+"L" || mt == m+"U" || mt == m+"Y")
+                noGravity = true;
+
+            // Manage different bosses in level 12 (Final hell level)
+            if (level.LevelIndex == 12 && (mt == b + "5" || mt == b+"5R"))
+            {
+                switch (level12bossCount)
+                {
+                    case 0:
+                        moveVertical = true;
+                        break;
+                    case 1:
+                        moveVertical = false;
+                        noGravity = true;
+                        break;
+                    case 2:
+                        moveVertical = true;
+                        break;
+                }
+            }
+
+            // If monster in moving vertical gravity must not apply
+            if (moveVertical)
+                noGravity = true;
+
+            // Make certain cars in race level go right
+            if (mt == m+"R" || mt == m+"U" || mt == m+"Q")
+                direction = FaceDirection.Right;
+
+            if (mt == m+"Q" || mt == m+"U")
+                multiDirectoinalFiring = true;
+
+            // Set boss and harder enemy characteristics
+            if (mt.Substring(0, 4) == b || mt == m + "M" || mt == m + "P" || mt == m+"Q" || mt == m+"U" || mt == m+"Y")
+            {
+                isBoss = true;
+                this.currMoveSpeed = BossSpeed;
+                // If is a monster (not a boss) make enemy a 'hard' enemy
+                if (mt.Substring(0, 4) == m)
+                {
+                    hardEnemy = true;
+                    bossReloadTime = EnemyReloadTime;
+                }
+                this.bossHealth = bossMaxHealth;
+                this.shotsToKill = GetShotsToKill();
+            }
+
+        }
+
         // Gets number of shots required to kill specific enemies
         private int GetShotsToKill()
         {
@@ -268,9 +278,7 @@ namespace RedMan
             }
         }
 
-        /// <summary>
-        /// Loads a particular enemy sprite sheet and sounds.
-        /// </summary>
+        // Loads a particular enemy sprite sheet and sounds.
         public void LoadContent(string spriteSet)
         {
             // Load animations.
@@ -418,7 +426,7 @@ namespace RedMan
                         this.OnKilled(null);
 
                     // For last boss
-                    if (monsterType == "Boss5R" && Bullet.Level12TargetCount >= 2)
+                    if (monsterType == "Boss5R" && Bullet.LevelTargetCount >= 2)
                         this.fireVertical = false;
 
                     // If about to swim into wall turn around

@@ -69,22 +69,9 @@ namespace RedMan
         public static float powerBulletVelocity = 5;
         public static float enemyShotVelocity = 3;
 
-        // Level specific
-        //NB Dont need spcific target counts for each level, just one + reset at start of each level
-        public static int Level1TargetCount = 0;
+        // Target counter for current level
+        public static int LevelTargetCount = 0;
         public static int Level1TargetCountMax = 4;
-        public static int Level4TargetCount = 0;
-        public static int Level4TargetCountMax = 2;
-        public static int Level5TargetCount = 0;
-        public static int Level5TargetCountMax = 3;
-        public static int Level6TargetCount = 0;
-        public static int Level6TargetCountMax = 2;
-        public static int Level8TargetCount = 0;
-        public static int Level8TargetCountMax = 4;
-        public static int Level11TargetCount = 0;
-        public static int Level11TargetCountMax = 4;
-        public static int Level12TargetCount = 0;
-        public static int Level12TargetCountMax = 4;
 
         // Stats for sniper mode (level 9)
         public static int shotsFired = 0;
@@ -564,8 +551,8 @@ namespace RedMan
                         {
                             // Special instance for level 1 (Basic Training 2)
                             case 1:
-                                Level1TargetCount++;
-                                if (Level1TargetCount == Level1TargetCountMax)
+                                LevelTargetCount++;
+                                if (LevelTargetCount == Level1TargetCountMax)
                                 {
                                     // Display message
                                     Level.Player.InfoString = "Oh it appears the lasers have broken, you'll have to try and jump through.";
@@ -589,10 +576,10 @@ namespace RedMan
 
                             // Special instance for level 4 (Space level)
                             case 4:
-                                 Level4TargetCount++;
+                                 LevelTargetCount++;
 
                                 // First half of level
-                                if (Level4TargetCount == 2)
+                                if (LevelTargetCount == 2)
                                 {
                                     if (x == 219 && (y == 15 || y == 20))
                                     {
@@ -606,13 +593,13 @@ namespace RedMan
                                 }
 
                                 // Second half of level
-                                if (Level4TargetCount == 3)
+                                if (LevelTargetCount == 3)
                                 {
                                      // Remove laser
                                     for (int i = 0; i < 24; i++)
                                         level.RemoveLaser(90, 19 + i);
                                 }
-                                if (Level4TargetCount == 6)
+                                if (LevelTargetCount == 6)
                                 {
                                     // Remove laser
                                     for (int i = 0; i < 25; i++)
@@ -622,10 +609,10 @@ namespace RedMan
                                 break;
 
                             case 5:
-                                Level5TargetCount++;
+                                LevelTargetCount++;
 
                                 // First section of level
-                                if (Level5TargetCount == 3)
+                                if (LevelTargetCount == 3)
                                 {
                                         // Remove laser
                                         for (int i = 0; i < 3; i++)
@@ -645,10 +632,10 @@ namespace RedMan
                                     // Remove laser
                                     for (int i = 0; i < 2; i++)
                                         level.RemoveLaser(196, 137 + i);
-                                    Level5TargetCount = 4;
+                                    LevelTargetCount = 4;
                                 }
 
-                                if (Level5TargetCount == 6)
+                                if (LevelTargetCount == 6)
                                 {
                                     // Remove laser
                                     for (int i = 0; i < 3; i++)
@@ -660,10 +647,10 @@ namespace RedMan
 
                             // Haunted house level
                             case 6:
-                                Level6TargetCount++;
-                                if (Level6TargetCount == 1)
+                                LevelTargetCount++;
+                                if (LevelTargetCount == 1)
                                     level.RemoveLaser(108, 3);
-                                if (Level6TargetCount == 2)
+                                if (LevelTargetCount == 2)
                                 {
                                     // Remove laser 1
                                     for (int i = 0; i < 2; i++)
@@ -684,9 +671,9 @@ namespace RedMan
                                 break;
 
                             case 8:
-                                Level8TargetCount++;
+                                LevelTargetCount++;
                                 level.Tiles[x, y] = level.LoadLevelTile("iceFloorTile", TileCollision.Passable);
-                                if (Level8TargetCount >= 3)
+                                if (LevelTargetCount >= 3)
                                 {
                                     for (int i = 0; i < 6; i++)
                                     {
@@ -695,7 +682,7 @@ namespace RedMan
                                     }
                                 }
 
-                                if (Level8TargetCount >= 4)
+                                if (LevelTargetCount >= 4)
                                 {
                                     for (int i = 0; i < 8; i++)
                                         level.RemoveLaser(875, 13 + i);
@@ -710,8 +697,8 @@ namespace RedMan
                                 break;
 
                             case 11:
-                                Level11TargetCount++;
-                                if (Level11TargetCount >= 3)
+                                LevelTargetCount++;
+                                if (LevelTargetCount >= 3)
                                 {
                                     for (int i = 0; i < 6; i++)
                                         level.RemoveLaser(58 + i, 41);
@@ -719,8 +706,8 @@ namespace RedMan
                                 break;
 
                             case 12:
-                                Level12TargetCount++;
-                                if (Level12TargetCount >= 2)
+                                LevelTargetCount++;
+                                if (LevelTargetCount >= 2)
                                 {
                                     for (int i = 0; i < 9; i++)
                                     {
@@ -744,16 +731,10 @@ namespace RedMan
         }
 
 
-        // Resets all target counts to zero
+        // Resets target count to zero and sniper stats
         public static void ResetTargetCounts()
         {
-            Level1TargetCount = 0;
-            Level4TargetCount = 0;
-            Level5TargetCount = 0;
-            Level6TargetCount = 0;
-            Level8TargetCount = 0;
-            Level11TargetCount = 0;
-            Level12TargetCount = 0;
+            LevelTargetCount = 0;
 
             // Reset sniper stats
                 shotsFired = 0;
@@ -765,14 +746,6 @@ namespace RedMan
                 targetMax = 8;
 
         }
-
-
-
-
-
-
-
-
 
         public Rectangle BoundingRectangle
         {

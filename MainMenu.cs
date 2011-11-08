@@ -339,7 +339,7 @@ namespace RedMan
 
                         // Visit website
                         case 4:
-                            System.Diagnostics.Process.Start("http://benhomer.freeiz.com/blog/");
+                            System.Diagnostics.Process.Start("http://www.benhomer.freeiz.com/blog/");
                             break;
 
                         // Back
@@ -399,14 +399,14 @@ namespace RedMan
                                     {
                                         SmtpServer.Port = 587;
                                         // Find out how to encrypt username and password
-                                        SmtpServer.Credentials = new System.Net.NetworkCredential("myusername", "mypassword");
+                                        SmtpServer.Credentials = new System.Net.NetworkCredential("********", "********");
                                         SmtpServer.EnableSsl = true;
 
                                         SmtpServer.Send(mail);
                                         mailStatus = MailStatus.Sent;
                                     }
                                 }
-                                catch (Exception ex)
+                                catch (Exception)
                                 {
                                     mailStatus = MailStatus.Failed;
                                 }
