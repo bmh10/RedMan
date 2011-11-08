@@ -201,7 +201,7 @@ namespace RedMan
                 }
         }
 
-        // Classifies each enemy depending on type an sets relevant charateristics
+        // Classifies each enemy depending on type and sets relevant charateristics
         private void SetupEnemy()
         {
             String m = "Monster";
